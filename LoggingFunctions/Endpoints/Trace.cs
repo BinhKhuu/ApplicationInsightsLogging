@@ -28,7 +28,7 @@ namespace ApplicationInsightsLogging.Api.Endpoints
             _telementryService = telementryService;
         }
 
-        [FunctionName("TraceProps")]
+        [FunctionName("Trace")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
@@ -36,22 +36,22 @@ namespace ApplicationInsightsLogging.Api.Endpoints
             var item = _loggerContext.Products.First();
 
             var client = _telementryService.Client;
+
             // prop__ set directly
             var traceTelementry = new TraceTelemetry();
             traceTelementry.Properties["RequestDate"] = DateTime.Today.ToString("yyyy-MM-dd hh:mm:ss");
             traceTelementry.Message = "Request Date";
 
             // prop__ set through Dictionary<string,string>
-            client.TrackTrace("First Item Name", SeverityLevel.Information, new Dictionary<string, string> { { "FirstItemName", item.Name } });
+            client.TrackTrace("Trace First Item Name", SeverityLevel.Information, new Dictionary<string, string> { { "FirstItemName", item.Name } });
             client.TrackTrace(traceTelementry);
     
             // prop__ set through scope
             using(log.BeginScope(new Dictionary<string, object> { ["FirstItem"] = item }))
             {
                 // prop__ set through template only works with ILogger
-                log.LogInformation("First Item is {FirstItem}", JsonConvert.SerializeObject(item));
+                log.LogInformation("Trace First Item is {FirstItem}", JsonConvert.SerializeObject(item));
             }
-
 
             return new OkObjectResult("Ugh");
         }
