@@ -38,19 +38,28 @@ namespace ApplicationInsightsLogging.Api.Endpoints
             var client = _telementryService.Client;
 
             // prop__ set directly
-            var traceTelementry = new TraceTelemetry();
-            traceTelementry.Properties["RequestDate"] = DateTime.Today.ToString("yyyy-MM-dd hh:mm:ss");
-            traceTelementry.Message = "Request Date";
-
-            // prop__ set through Dictionary<string,string>
-            client.TrackTrace("Trace First Item Name", SeverityLevel.Information, new Dictionary<string, string> { { "FirstItemName", item.Name } });
-            client.TrackTrace(traceTelementry);
-    
-            // prop__ set through scope
-            using(log.BeginScope(new Dictionary<string, object> { ["FirstItem"] = item }))
+            /*
+            traces
+            | where isnotnull(customDimensions["RequestDate"]) or isnotnull( customDimensions["prop__FirstItem"])
+            */
+            using (var operation = client.StartOperation<RequestTelemetry>("UGH Request"))
             {
-                // prop__ set through template only works with ILogger
-                log.LogInformation("Trace First Item is {FirstItem}", JsonConvert.SerializeObject(item));
+                operation.Telemetry.ResponseCode = "222";
+                var traceTelementry = new TraceTelemetry();
+                // Props set like this appear in custom dimensions without the props__ prefix
+                traceTelementry.Properties["RequestDate"] = DateTime.Today.ToString("yyyy-MM-dd hh:mm:ss");
+                traceTelementry.Message = "Request Date";
+
+                // prop__ set through Dictionary<string,string>
+                client.TrackTrace("Trace First Item Name", SeverityLevel.Information, new Dictionary<string, string> { { "FirstItemName", item.Name } });
+                client.TrackTrace(traceTelementry);
+
+                // prop__ set through scope
+                using (log.BeginScope(new Dictionary<string, object> { ["FirstItem"] = item }))
+                {
+                    // prop__ set through template only works with ILogger
+                    log.LogInformation("Trace First Item is {FirstItem}", JsonConvert.SerializeObject(item));
+                }
             }
 
             return new OkObjectResult("Ugh");

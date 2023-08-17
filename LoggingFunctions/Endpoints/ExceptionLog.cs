@@ -11,6 +11,8 @@ using ApplicationInsightsLogging.Api.Services;
 using ApplicationInsightsLogging.Infrastructure.DBContext;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace ApplicationInsightsLogging.Api.Endpoints
 {
@@ -31,6 +33,10 @@ namespace ApplicationInsightsLogging.Api.Endpoints
             var client = _telementryService.Client;
             try
             {
+                /*
+                    exceptions
+                    | where customDimensions["prop__MyScopedProps"] == 101 
+                */
                 using (log.BeginScope(new Dictionary<string, object> { ["MyScopedProps"] = 101 }))
                 {
                     var item = _loggerContext.Products.First();
@@ -41,14 +47,40 @@ namespace ApplicationInsightsLogging.Api.Endpoints
             }
             catch (Exception ex) when (FlushLog(ex, log))
             {
-                client.TrackException(ex);
-                var exceptionProperties = new Dictionary<string, string>()
+                // Create custom context
+                using (var operation = client.StartOperation<RequestTelemetry>("UGH Exception"))
                 {
-                    ["MyExceptionProperty1"] = ex.StackTrace,
-                    ["MyExceptionProperty2"] = JsonConvert.SerializeObject(ex.InnerException),
-                };
-                // logged exception 3
-                client.TrackException(ex, exceptionProperties);
+                    operation.Telemetry.ResponseCode = "500";
+                    client.TrackException(ex);
+                    var exceptionProperties = new Dictionary<string, string>()
+                    {
+                        ["MyExceptionProperty1"] = ex.StackTrace,
+                        ["MyExceptionProperty2"] = JsonConvert.SerializeObject(ex.InnerException),
+                    };
+                    // logged exception 3
+                    client.TrackException(ex, exceptionProperties);
+
+                    client.StopOperation(operation);
+                }
+                /*
+                 * 
+                    requests
+                    | join exceptions on operation_Id
+                    | join dependencies on operation_Id
+                    | join traces on operation_Id
+                    | where operation_Name  == "UGH Exception"
+
+                    requests
+                    | union exceptions
+                    | where operation_Name == "UGH Exception"
+                    | project operation_Id, operation_Name, itemType, customDimensions, resultCode
+
+
+                    requests
+                    | join exceptions on operation_Id
+                    | project operation_Name, itemType, customDimensions, customDimensions1
+                    | where operation_Name  == "UGH Exception"
+                 * */
             }
 
             return new OkObjectResult("Ugh");
