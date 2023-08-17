@@ -41,6 +41,9 @@ namespace ApplicationInsightsLogging.Api.Endpoints
             /*
             traces
             | where isnotnull(customDimensions["RequestDate"]) or isnotnull( customDimensions["prop__FirstItem"])
+
+            requests
+            | where resultCode == "222"
             */
             using (var operation = client.StartOperation<RequestTelemetry>("UGH Request"))
             {
@@ -60,6 +63,8 @@ namespace ApplicationInsightsLogging.Api.Endpoints
                     // prop__ set through template only works with ILogger
                     log.LogInformation("Trace First Item is {FirstItem}", JsonConvert.SerializeObject(item));
                 }
+
+                client.StopOperation(operation);
             }
 
             return new OkObjectResult("Ugh");
