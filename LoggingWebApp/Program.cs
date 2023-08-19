@@ -1,3 +1,4 @@
+using BlazorApplicationInsights;
 using LoggingWebApp;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -13,5 +14,18 @@ builder.Services.AddMsalAuthentication(options =>
     builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
 });
 
+builder.Services.AddBlazorApplicationInsights(async applicationInsights =>
+{
+	var telemetryItem = new TelemetryItem()
+	{
+		Tags = new Dictionary<string, object>()
+		{
+			{ "ai.cloud.role", "SPA" },
+			{ "ai.cloud.roleInstance", "Blazor Wasm" },
+		}
+	};
+
+	await applicationInsights.AddTelemetryInitializer(telemetryItem);
+});
 
 await builder.Build().RunAsync();
