@@ -1,11 +1,50 @@
 {
     "version": "2.0",
     "logging": {
-        "applicationInsights": {
-            "samplingSettings": {
-                "isEnabled": true,
-                "excludedTypes": "Request"
-            }
+      "applicationInsights": {
+        "LogLevel": {
+          "Default": "Information"
+        },
+        "samplingSettings": {
+          "isEnabled": true,
+          "excludedTypes": "Request"
+        },
+        "Debug": { // Debug provider.
+          "LogLevel": {
+            "Default": "Information" // Overrides preceding LogLevel:Default setting.
+          }
+        },
+        "Console": {
+          "IncludeScopes": true,
+          "LogLevel": {
+            "Microsoft.AspNetCore.Mvc.Razor.Internal": "Warning",
+            "Microsoft.AspNetCore.Mvc.Razor.Razor": "Debug",
+            "Microsoft.AspNetCore.Mvc.Razor": "Error",
+            "Default": "Information"
+          }
+        },
+        "EventSource": {
+          "LogLevel": {
+            "Microsoft": "Information"
+          }
+        },
+        "EventLog": {
+          "LogLevel": {
+            "Microsoft": "Information"
+          }
+        },
+        "AzureAppServicesFile": {
+          "IncludeScopes": true,
+          "LogLevel": {
+            "Default": "Warning"
+          }
+        },
+        "AzureAppServicesBlob": {
+          "IncludeScopes": true,
+          "LogLevel": {
+            "Microsoft": "Information"
+          }
         }
+      }
     }
 }

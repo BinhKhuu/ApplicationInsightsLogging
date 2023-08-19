@@ -7,13 +7,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{F76E67
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{41155B23-D9D7-4E2E-BB7E-17E047566CCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationInsightsLogging.Api", "LoggingFunctions\ApplicationInsightsLogging.Api.csproj", "{F47DB6B4-1F01-4A90-B6D6-6F6F3C162E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationInsightsLogging.Api", "LoggingFunctions\ApplicationInsightsLogging.Api.csproj", "{F47DB6B4-1F01-4A90-B6D6-6F6F3C162E69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingWebApp", "LoggingWebApp\LoggingWebApp.csproj", "{220FAE0C-D045-42F1-8616-DC70AAA75346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingWebApp", "LoggingWebApp\LoggingWebApp.csproj", "{220FAE0C-D045-42F1-8616-DC70AAA75346}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationInsightsLogging.Core", "ApplicationInsightsLogging.Core\ApplicationInsightsLogging.Core.csproj", "{ECD9A5B5-1CE1-438F-BD95-3AB3A159AF04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationInsightsLogging.Infrastructure", "ApplicationInsightsLogging\ApplicationInsightsLogging.Infrastructure.csproj", "{42097A87-06E6-489E-9318-68F7A2D993C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationInsightsLogging.Infrastructure", "ApplicationInsightsLogging\ApplicationInsightsLogging.Infrastructure.csproj", "{42097A87-06E6-489E-9318-68F7A2D993C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D8E11CA9-FE5F-4C69-AB1C-B3C64060AA1D}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
