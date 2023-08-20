@@ -17,9 +17,11 @@ document.cookie = `${ai_connString}; ${cookie}`;
 
 ```
 
-# Function local.settings.json
+# Function set up
 
+## local db: ApplicationInsightsLogger
 
+## local.settings.json
 ``` json
   "IsEncrypted": false,
   "Values": {
