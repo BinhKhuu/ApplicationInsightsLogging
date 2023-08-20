@@ -5,7 +5,7 @@
 
 <h1>Weather forecast</h1>
 <button @onclick="Log">Log</button>
-<p>@Message</p>
+<p>@Message @count</p>
 <p>This component demonstrates fetching data from the server.</p>
 
 @code {
@@ -21,6 +21,7 @@
     [CascadingParameter] 
     public Task<AuthenticationState> AuthenticationState { get; set; }
 
+    private int count { get; set; }
 
     public string Message = string.Empty;
     protected override async Task OnInitializedAsync()
@@ -31,9 +32,9 @@
 
     public async Task Log()
     {
-        //var user = (await AuthenticationState).User;
-        //await AppInsights.SetAuthenticatedUserContext(user.FindFirst("preferred_username")?.Value);
-        await AppInsights.TrackEvent("Web Event fetching Metrics");
+        var user = (await AuthenticationState).User;
+        await AppInsights.SetAuthenticatedUserContext(user.FindFirst("preferred_username")?.Value);
+        await AppInsights.TrackEvent("Web Event fetching Metrics", new Dictionary<string, object>() { { "customProperty", "customValue" } });
         await AppInsights.Flush();
 
         var response = await httpClient.GetAsync("api/Metrics");
@@ -43,5 +44,7 @@
             throw new ApplicationException(content);
         }
         Message = content;
+        count++;
+
     }
 }

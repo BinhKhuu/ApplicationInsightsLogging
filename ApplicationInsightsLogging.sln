@@ -8,6 +8,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{41155B23-D9D7-4E2E-BB7E-17E047566CCA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationInsightsLogging.Api", "LoggingFunctions\ApplicationInsightsLogging.Api.csproj", "{F47DB6B4-1F01-4A90-B6D6-6F6F3C162E69}"
+	ProjectSection(ProjectDependencies) = postProject
+		{220FAE0C-D045-42F1-8616-DC70AAA75346} = {220FAE0C-D045-42F1-8616-DC70AAA75346}
+		{ECD9A5B5-1CE1-438F-BD95-3AB3A159AF04} = {ECD9A5B5-1CE1-438F-BD95-3AB3A159AF04}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingWebApp", "LoggingWebApp\LoggingWebApp.csproj", "{220FAE0C-D045-42F1-8616-DC70AAA75346}"
 EndProject
