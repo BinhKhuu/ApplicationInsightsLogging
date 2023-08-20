@@ -32,8 +32,11 @@
 
     public async Task Log()
     {
+        // authentication
         var user = (await AuthenticationState).User;
         await AppInsights.SetAuthenticatedUserContext(user.FindFirst("preferred_username")?.Value);
+
+        // custom event
         await AppInsights.TrackEvent("Web Event fetching Metrics", new Dictionary<string, object>() { { "customProperty", "customValue" } });
         await AppInsights.Flush();
 
