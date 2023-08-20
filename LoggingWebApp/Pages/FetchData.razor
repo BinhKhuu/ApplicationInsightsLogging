@@ -4,54 +4,47 @@
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
-
+<button @onclick="Log">Log</button>
+<p>@Message @count</p>
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
 @code {
-    private WeatherForecast[]? forecasts;
+    [Inject]
+    private ILogger<Index> Logger { get; set; }
 
+    [Inject]
+    private HttpClient httpClient { get; set; }
+
+    [Inject] 
+    private IApplicationInsights AppInsights { get; set; }
+
+    [CascadingParameter] 
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    private int count { get; set; }
+
+    public string Message = string.Empty;
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
     }
 
-    public class WeatherForecast
+
+
+    public async Task Log()
     {
-        public DateTime Date { get; set; }
+        var user = (await AuthenticationState).User;
+        await AppInsights.SetAuthenticatedUserContext(user.FindFirst("preferred_username")?.Value);
+        await AppInsights.TrackEvent("Web Event fetching Metrics", new Dictionary<string, object>() { { "customProperty", "customValue" } });
+        await AppInsights.Flush();
 
-        public int TemperatureC { get; set; }
+        var response = await httpClient.GetAsync("api/Metrics");
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApplicationException(content);
+        }
+        Message = content;
+        count++;
 
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }
