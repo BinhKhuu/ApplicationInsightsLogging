@@ -19,7 +19,11 @@ document.cookie = `${ai_connString}; ${cookie}`;
 
 # Function set up
 
-## local db: ApplicationInsightsLogger
+## db name: ApplicationInsightsLogger
+1. set .api project as start up
+1. package manager console target .infrastructure project
+1. run ```Update-Database``` note you may need to create db named ApplicationInsightsLogger first
+
 
 ## local.settings.json
 ``` json
