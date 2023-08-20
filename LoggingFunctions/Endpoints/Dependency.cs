@@ -58,6 +58,7 @@ namespace ApplicationInsightsLogging.Api.Endpoints
                 }
             }
 
+            // manual custom dependeny telementry
             var success = false;
             var startTime = DateTime.UtcNow;
             var timer = System.Diagnostics.Stopwatch.StartNew();
