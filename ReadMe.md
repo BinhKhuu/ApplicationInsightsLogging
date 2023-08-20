@@ -10,7 +10,7 @@ Create enviroment variable APPLICATIONINSIGHTS_CONNECTION_STRING to target appli
 
 var cookie = document.cookie;
 // replace Conn Str
-var connStr = encodeURIComponent("appInsightsConnStr")}
+var connStr = encodeURIComponent("appInsightsConnStr")
 var ai_connString = `ai_connString=${connStr}`;
 
 document.cookie = `${ai_connString}; ${cookie}`;
