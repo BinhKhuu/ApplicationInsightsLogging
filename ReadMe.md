@@ -16,3 +16,22 @@ var ai_connString = `ai_connString=${connStr}`;
 document.cookie = `${ai_connString}; ${cookie}`;
 
 ```
+
+# Function local.settings.json
+
+
+``` json
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
+    "SqlServerConnectionString": "",
+    "TelementryConnectionString": ""
+  },
+  "Host": {
+    "LocalHttpPort": 7189,
+    "CORS": "*"
+  }
+
+```
