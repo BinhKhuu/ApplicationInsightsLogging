@@ -4,7 +4,7 @@ Create enviroment variable APPLICATIONINSIGHTS_CONNECTION_STRING to target appli
 
 # Blazor insights set up
 
-1. create cookie ai_connString to enable blazor insights logging.
+1. create cookie ai_connString to enable blazor insights logging in index.html.
 
 ``` js
 
